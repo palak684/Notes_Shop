@@ -1,6 +1,8 @@
 import 'package:firebase_project/screens/home_teacher.dart';
 import 'package:flutter/material.dart';
 import 'home.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -10,6 +12,8 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+   TextEditingController _passwordTextController = TextEditingController();
+  TextEditingController _EmailTextController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -26,6 +30,7 @@ class _LoginState extends State<Login> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
                 child: TextField (
+                  controller: _EmailTextController,
                   decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(30.0),
@@ -39,6 +44,7 @@ class _LoginState extends State<Login> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
                 child: TextField (
+                  controller: _passwordTextController,
                   decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(30.0),
@@ -55,10 +61,16 @@ class _LoginState extends State<Login> {
                   child: FloatingActionButton.extended(
                       heroTag: 'login',
                       onPressed: (){
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => CSE_T()),
-                        );
+                        FirebaseAuth.instance
+                            .signInWithEmailAndPassword(
+                                email: _EmailTextController.text,
+                                password: _passwordTextController.text)
+                            .then((value) {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) => CSE_T()));
+                        }).onError((error, stackTrace) {
+                          print("Error ${error.toString()}");
+                        });
                       },
                       label: Text('Login',style: TextStyle(color: Colors.black)),
                       backgroundColor: Colors.white
