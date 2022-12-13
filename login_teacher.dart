@@ -1,7 +1,5 @@
 import 'package:firebase_project/screens/home_teacher.dart';
 import 'package:flutter/material.dart';
-import 'home.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class Login extends StatefulWidget {
@@ -12,7 +10,7 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-   TextEditingController _passwordTextController = TextEditingController();
+  TextEditingController _passwordTextController = TextEditingController();
   TextEditingController _EmailTextController = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -21,15 +19,16 @@ class _LoginState extends State<Login> {
         body: Container(
           decoration: BoxDecoration(
             image: DecorationImage(
-                image: AssetImage('assets/Register.png')
+                image: AssetImage('assets/Register.png'), fit: BoxFit.cover
             ),
           ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+          child: ListView(
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
                 child: TextField (
+                  scrollPadding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).viewInsets.bottom),
                   controller: _EmailTextController,
                   decoration: InputDecoration(
                       border: OutlineInputBorder(
@@ -44,6 +43,8 @@ class _LoginState extends State<Login> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
                 child: TextField (
+                  scrollPadding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).viewInsets.bottom),
                   controller: _passwordTextController,
                   decoration: InputDecoration(
                       border: OutlineInputBorder(
@@ -63,8 +64,8 @@ class _LoginState extends State<Login> {
                       onPressed: (){
                         FirebaseAuth.instance
                             .signInWithEmailAndPassword(
-                                email: _EmailTextController.text,
-                                password: _passwordTextController.text)
+                            email: _EmailTextController.text,
+                            password: _passwordTextController.text)
                             .then((value) {
                           Navigator.push(context,
                               MaterialPageRoute(builder: (context) => CSE_T()));
