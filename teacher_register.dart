@@ -1,7 +1,5 @@
 import 'package:firebase_project/screens/terms_teacher.dart';
 import 'package:flutter/material.dart';
-import '../terms.dart';
-
 
 class Register_T extends StatefulWidget {
   const Register_T({Key? key}) : super(key: key);
@@ -20,15 +18,16 @@ class _Register_TState extends State<Register_T> {
           height: 850,
           decoration: BoxDecoration(
             image: DecorationImage(
-                image: AssetImage('assets/Register.png')
+                image: AssetImage('assets/Register.png'), fit: BoxFit.cover
             ),
           ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+          child: ListView(
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
                 child: TextField (
+                  scrollPadding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).viewInsets.bottom),
                   decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(30.0),
@@ -42,6 +41,8 @@ class _Register_TState extends State<Register_T> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
                 child: TextField (
+                  scrollPadding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).viewInsets.bottom),
                   decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(30.0),
@@ -55,6 +56,8 @@ class _Register_TState extends State<Register_T> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
                 child: TextField (
+                  scrollPadding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).viewInsets.bottom),
                   decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(30.0),
@@ -68,6 +71,8 @@ class _Register_TState extends State<Register_T> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
                 child: TextField (
+                  scrollPadding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).viewInsets.bottom),
                   decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(30.0),
