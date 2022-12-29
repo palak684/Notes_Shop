@@ -1,4 +1,9 @@
+import 'dart:ffi';
+
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import '../reusable_widget.dart';
 import '../terms.dart';
 
 
@@ -10,6 +15,9 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
+  TextEditingController _passwordTextController = TextEditingController();
+  TextEditingController _EmailTextController = TextEditingController();
+  TextEditingController _userNameTextController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -20,121 +28,37 @@ class _RegisterState extends State<Register> {
                 image: AssetImage('assets/Register.png'), fit: BoxFit.cover
             ),
           ),
-          child:ListView(
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-                child: TextField (
-                  scrollPadding: EdgeInsets.only(
-                      bottom: MediaQuery.of(context).viewInsets.bottom),
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30.0),
-                      ),
-                      labelText: 'Name',
-                      filled: true,
-                      fillColor: Colors.purple[200]
+          child:SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(20, 25, 20, 0),
+              child: Column(
+                children: <Widget>[
+                  reusableTextField("Enter UserName", Icons.person_outline, false, _userNameTextController),
+                  SizedBox(
+                    height: 20,
                   ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-                child: TextField (
-                  scrollPadding: EdgeInsets.only(
-                      bottom: MediaQuery.of(context).viewInsets.bottom),
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30.0),
-                      ),
-                      labelText: 'Email ID',
-                      filled: true,
-                      fillColor: Colors.purple[200]
+                  reusableTextField("Enter Email", Icons.email, false, _EmailTextController),
+                  SizedBox(
+                    height: 20,
                   ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-                child: TextField (
-                  scrollPadding: EdgeInsets.only(
-                      bottom: MediaQuery.of(context).viewInsets.bottom),
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30.0),
-                      ),
-                      labelText: 'Username',
-                      filled: true,
-                      fillColor: Colors.purple[200]
+                  reusableTextField("Enter Password", Icons.lock_outline, true, _passwordTextController),
+                  SizedBox(
+                    height: 20,
                   ),
-                ),
+                  SigninSignupButton(context, false, (){
+                    FirebaseAuth.instance.createUserWithEmailAndPassword(email: _EmailTextController.text,
+                        password: _passwordTextController.text).then((value)
+                    {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => MyHomePage()),
+                      );
+                    });
+                    }
+                    )
+                ],
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-                child: TextField (
-                  scrollPadding: EdgeInsets.only(
-                      bottom: MediaQuery.of(context).viewInsets.bottom),
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30.0),
-                      ),
-                      labelText: 'Password',
-                      filled: true,
-                      fillColor: Colors.purple[200]
-                  ),
-                ),
-              ),
-              new SizedBox(
-                  width: 220,
-                  height: 40,
-                  child: FloatingActionButton.extended(
-                      heroTag: 'register',
-                      onPressed: (){
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => MyHomePage()),
-                        );
-                      },
-                      label: Text('Register',style: TextStyle(color: Colors.black)),
-                      backgroundColor: Colors.white
-                  )
-              ),
-              Text(
-                  'OR',
-                  style: TextStyle(fontSize: 35,color: Colors.black)
-              ),
-              new SizedBox(
-                  width: 220,
-                  height: 40,
-                  child: FloatingActionButton.extended(
-                    heroTag: 'google',
-                    onPressed: (){},
-                    label: Text('Sign in with Google'),
-                    icon: Image.asset(
-                        'assets/google icon.jpg',
-                        height: 30,
-                        width: 30),
-                    backgroundColor: Colors.white,
-                    foregroundColor: Colors.black,
-                  )
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              new SizedBox(
-                width: 220,
-                height: 40,
-                child: FloatingActionButton.extended(
-                  heroTag: 'apple',
-                  onPressed: (){},
-                  label: Text('Sign in with Apple'),
-                  icon: Image.asset(
-                      'assets/apple.png',
-                      height: 32,
-                      width: 32),
-                  backgroundColor: Colors.white,
-                  foregroundColor: Colors.black,
-                ),
-              ),
-            ],
+            ),
           ),
         ),
       ),
