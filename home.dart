@@ -1,6 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_project/screens/profile.dart';
 import 'package:firebase_project/screens/upload_screen.dart';
-import 'package:firebase_project/screens/virtual.dart';
+import 'package:firebase_project/screens/virtual_screen.dart';
 import 'package:firebase_project/screens/welcome.dart';
 import 'package:flutter/material.dart';
 
@@ -23,10 +24,12 @@ class CSE extends StatelessWidget {
               icon: Icon(Icons.person),
                 label: Text('Logout'),
                 onPressed: (){
+                FirebaseAuth.instance.signOut().then((value){
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => Welcome()),
                   );
+                });
                 },
             )
           ],
