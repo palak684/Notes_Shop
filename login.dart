@@ -1,3 +1,4 @@
+import 'package:firebase_project/screens/reusable_widget.dart';
 import 'package:flutter/material.dart';
 import 'home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -20,89 +21,32 @@ class _LoginState extends State<Login> {
           decoration: BoxDecoration(
             image: DecorationImage(image: AssetImage('assets/Register.png'), fit: BoxFit.cover),
           ),
-          child: ListView(
-            children: <Widget>[
-              Padding(
-                padding:
-                const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-                child: TextField(
-                  scrollPadding: EdgeInsets.only(
-                      bottom: MediaQuery.of(context).viewInsets.bottom),
-                  controller: _EmailTextController,
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30.0),
-                      ),
-                      labelText: 'Enter Email ID',
-                      filled: true,
-                      fillColor: Colors.purple[200]),
-                ),
+          child:SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(20, 10, 20, 0),
+              child: Column(
+                children: <Widget>[
+                  reusableTextField("Enter Email", Icons.email, false, _EmailTextController),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  reusableTextField("Enter Password", Icons.lock_outline, true, _passwordTextController),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  SigninSignupButton(context, true, (){
+                    FirebaseAuth.instance.signInWithEmailAndPassword(email: _EmailTextController.text,
+                        password: _passwordTextController.text).then((value)
+                    {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => CSE()),
+                      );
+                    });
+                  },)
+                ],
               ),
-              Padding(
-                padding:
-                const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-                child: TextField(
-                  scrollPadding: EdgeInsets.only(
-                      bottom: MediaQuery.of(context).viewInsets.bottom),
-                  controller: _passwordTextController,
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30.0),
-                      ),
-                      labelText: 'Enter Password',
-                      filled: true,
-                      fillColor: Colors.purple[200]),
-                ),
-              ),
-              new SizedBox(
-                  width: 220,
-                  height: 40,
-                  child: FloatingActionButton.extended(
-                      heroTag: 'login',
-                      onPressed: () {
-                        FirebaseAuth.instance
-                            .signInWithEmailAndPassword(
-                            email: _EmailTextController.text,
-                            password: _passwordTextController.text)
-                            .then((value) {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => CSE()));
-                        }).onError((error, stackTrace) {
-                          print("Error ${error.toString()}");
-                        });
-                      },
-                      label:
-                      Text('Login', style: TextStyle(color: Colors.black)),
-                      backgroundColor: Colors.white)),
-              Text('OR', style: TextStyle(fontSize: 35, color: Colors.black)),
-              new SizedBox(
-                  width: 220,
-                  height: 40,
-                  child: FloatingActionButton.extended(
-                    heroTag: 'google',
-                    onPressed: () {},
-                    label: Text('Login in with Google'),
-                    icon: Image.asset('assets/google icon.jpg',
-                        height: 30, width: 30),
-                    backgroundColor: Colors.white,
-                    foregroundColor: Colors.black,
-                  )),
-              SizedBox(
-                height: 10,
-              ),
-              new SizedBox(
-                width: 220,
-                height: 40,
-                child: FloatingActionButton.extended(
-                  heroTag: 'apple',
-                  onPressed: () {},
-                  label: Text('Login in with Apple'),
-                  icon: Image.asset('assets/apple.png', height: 32, width: 32),
-                  backgroundColor: Colors.white,
-                  foregroundColor: Colors.black,
-                ),
-              ),
-            ],
+            ),
           ),
         ),
       ),
