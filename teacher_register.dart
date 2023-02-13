@@ -1,5 +1,10 @@
-import 'package:firebase_project/screens/terms_teacher.dart';
+import 'dart:ffi';
+
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import '../reusable_widget.dart';
+import '../terms.dart';
 
 class Register_T extends StatefulWidget {
   const Register_T({Key? key}) : super(key: key);
@@ -9,132 +14,85 @@ class Register_T extends StatefulWidget {
 }
 
 class _Register_TState extends State<Register_T> {
+  TextEditingController _passwordTextController = TextEditingController();
+  TextEditingController _EmailTextController = TextEditingController();
+  TextEditingController _userNameTextController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
+        resizeToAvoidBottomInset: false,
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: Colors.purple[800],
+          leading:
+          IconButton( onPressed: (){
+            Navigator.pop(context);
+          },icon:Icon(Icons.arrow_back_ios,size: 20,color: Colors.black,)),
+        ),
         body: Container(
-          width: 500,
-          height: 850,
+          height: MediaQuery.of(context).size.height,
+          width: double.infinity,
           decoration: BoxDecoration(
             image: DecorationImage(
                 image: AssetImage('assets/Register.png'), fit: BoxFit.cover
             ),
           ),
-          child: ListView(
-            children: <Widget>[
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [Column(children:[
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-                child: TextField (
-                  scrollPadding: EdgeInsets.only(
-                      bottom: MediaQuery.of(context).viewInsets.bottom),
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30.0),
-                      ),
-                      labelText: 'Name',
-                      filled: true,
-                      fillColor: Colors.purple[200]
+                padding: EdgeInsets.symmetric(
+                    horizontal: 40
+                ),
+                child: Column(children:[
+                  reusableTextField("Enter UserName", Icons.person_outline, false, _userNameTextController),
+                  SizedBox(
+                    height: 30,
                   ),
+                ],
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-                child: TextField (
-                  scrollPadding: EdgeInsets.only(
-                      bottom: MediaQuery.of(context).viewInsets.bottom),
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30.0),
-                      ),
-                      labelText: 'Email ID',
-                      filled: true,
-                      fillColor: Colors.purple[200]
+                padding: EdgeInsets.symmetric(
+                    horizontal: 40
+                ),
+                child:Column(children:[
+                  reusableTextField("Enter Email", Icons.email, false, _EmailTextController),
+                  SizedBox(
+                    height: 30,
                   ),
+                ],
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-                child: TextField (
-                  scrollPadding: EdgeInsets.only(
-                      bottom: MediaQuery.of(context).viewInsets.bottom),
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30.0),
-                      ),
-                      labelText: 'Username',
-                      filled: true,
-                      fillColor: Colors.purple[200]
+                padding: EdgeInsets.symmetric(
+                    horizontal: 40
+                ),
+
+                child:Column(children: [
+                  reusableTextField("Enter Password", Icons.lock_outline, true, _passwordTextController),
+                  SizedBox(
+                    height: 20,
                   ),
+                ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-                child: TextField (
-                  scrollPadding: EdgeInsets.only(
-                      bottom: MediaQuery.of(context).viewInsets.bottom),
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30.0),
-                      ),
-                      labelText: 'Password',
-                      filled: true,
-                      fillColor: Colors.purple[200]
-                  ),
-                ),
-              ),
-              new SizedBox(
-                  width: 220,
-                  height: 40,
-                  child: FloatingActionButton.extended(
-                      heroTag: 'register',
-                      onPressed: (){
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => MyHomePage_T()),
-                        );
-                      },
-                      label: Text('Register',style: TextStyle(color: Colors.black)),
-                      backgroundColor: Colors.white
-                  )
-              ),
-              Text(
-                  'OR',
-                  style: TextStyle(fontSize: 35,color: Colors.black)
-              ),
-              new SizedBox(
-                  width: 220,
-                  height: 40,
-                  child: FloatingActionButton.extended(
-                    heroTag: 'google',
-                    onPressed: (){},
-                    label: Text('Sign in with Google'),
-                    icon: Image.asset(
-                        'assets/google icon.jpg',
-                        height: 30,
-                        width: 30),
-                    backgroundColor: Colors.white,
-                    foregroundColor: Colors.black,
-                  )
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              new SizedBox(
-                width: 220,
-                height: 40,
-                child: FloatingActionButton.extended(
-                  heroTag: 'apple',
-                  onPressed: (){},
-                  label: Text('Sign in with Apple'),
-                  icon: Image.asset(
-                      'assets/apple.png',
-                      height: 32,
-                      width: 32),
-                  backgroundColor: Colors.white,
-                  foregroundColor: Colors.black,
-                ),
-              ),
+
+              SigninSignupButton(context, false, (){
+                FirebaseAuth.instance.createUserWithEmailAndPassword(email: _EmailTextController.text,
+                    password: _passwordTextController.text).then((value)
+                {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => MyHomePage()),
+                  );
+                });
+              }
+              )
+
+            ],
+            ),
             ],
           ),
         ),
