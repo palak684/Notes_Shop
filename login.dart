@@ -17,36 +17,60 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: Colors.purple[800],
+          leading:
+          IconButton( onPressed: (){
+            Navigator.pop(context);
+          },icon:Icon(Icons.arrow_back_ios,size: 20,color: Colors.black,)),
+        ),
         body: Container(
           decoration: BoxDecoration(
-            image: DecorationImage(image: AssetImage('assets/Register.png'), fit: BoxFit.cover),
+            image: DecorationImage(image: AssetImage('assets/Register (1).png'), fit: BoxFit.cover),
           ),
-          child:SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(20, 10, 20, 0),
-              child: Column(
-                children: <Widget>[
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [Column(children:[
+
+              Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: 40
+                ),
+                child:Column(children:[
                   reusableTextField("Enter Email", Icons.email, false, _EmailTextController),
                   SizedBox(
-                    height: 20,
+                    height: 30,
                   ),
+                ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: 40
+                ),
+
+                child:Column(children: [
                   reusableTextField("Enter Password", Icons.lock_outline, true, _passwordTextController),
                   SizedBox(
                     height: 20,
                   ),
-                  SigninSignupButton(context, true, (){
-                    FirebaseAuth.instance.signInWithEmailAndPassword(email: _EmailTextController.text,
-                        password: _passwordTextController.text).then((value)
-                    {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => CSE()),
-                      );
-                    });
-                  },)
                 ],
+                ),
               ),
+              SigninSignupButton(context, true, (){
+                FirebaseAuth.instance.signInWithEmailAndPassword(email: _EmailTextController.text,
+                    password: _passwordTextController.text).then((value)
+                {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => CSE()),
+                  );
+                });
+              },)
+            ],
             ),
+            ],
           ),
         ),
       ),
