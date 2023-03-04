@@ -1,8 +1,6 @@
 import 'package:firebase_project/screens/course_teacher.dart';
 import 'package:flutter/material.dart';
 
-import 'course.dart';
-
 class MyHomePage_T extends StatefulWidget {
   const MyHomePage_T({Key? key}) : super(key: key);
 
@@ -12,7 +10,7 @@ class MyHomePage_T extends StatefulWidget {
 
 class _MyHomePage_TState extends State<MyHomePage_T> {
   // By defaut, the checkbox is unchecked and "agree" is "false"
-  bool agree = false;
+  bool _isChecked = false;
 
   // This function is triggered when the button is clicked
   void _doSomething() {
@@ -28,10 +26,15 @@ class _MyHomePage_TState extends State<MyHomePage_T> {
         height: 60,
         child: FloatingActionButton.extended(
           onPressed: (){
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => CourseT()),
-            );
+            if(_isChecked==true) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => CourseT()),
+              );
+            }
+            else{
+              null;
+            }
           },
           label: Text('Register'),
           // icon: Image.asset(
@@ -55,37 +58,27 @@ class _MyHomePage_TState extends State<MyHomePage_T> {
 
 
 
-        child: Column(children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Material(
-
-
-                child: Checkbox(
-
-                  //  alignment: Alignment.bottomCenter,
-                  value: agree,
-                  onChanged: (value) {
-                    setState(() {
-                      agree = value ?? false;
-                    });
-                  },
-                ),
-
-
-
+        child: Column(crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            const SizedBox(height: 150),
+            CheckboxListTile(
+              value: _isChecked,
+              selected: _isChecked,
+              contentPadding: EdgeInsets.zero,
+              onChanged: (v) {
+                setState(() {
+                  print(v);
+                  _isChecked = v!;
+                });
+              },
+              title: Text(
+                'I accept the terms and conditions',
+                maxLines: 5,
               ),
-
-
-            ],
-          ),
-          // ElevatedButton(
-          //     onPressed: agree ? _doSomething : null,
-          //     child: const Text('Continue'))
-
-        ],
-
+              controlAffinity: ListTileControlAffinity.leading,
+            ),
+          ],
         ),
       ),
     );
